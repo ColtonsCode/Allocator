@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
-#include "c_malloc.h"
+#include "cc_allocate.h"
 
 // A simple program for testing my custom allocator
 // Tutorial used: https://danluu.com/malloc-tutorial/

@@ -8,7 +8,7 @@ TARGET = allocator_test
 BUILD_DIR = build
 
 # Source files and object files
-SRCS = main.c c_malloc.c
+SRCS = main.c cc_allocate.c
 OBJS = $(SRCS:%.c=$(BUILD_DIR)/%.o)
 DEPS = $(OBJS:.o=.d)
 
@@ -35,6 +35,6 @@ clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
 
 # Run the program
-run: $(TARGET)
-	./$(TARGET)
+run: $(BUILD_DIR)/$(TARGET)
+	./$(BUILD_DIR)/$(TARGET)
 

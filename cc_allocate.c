@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <stdbool.h>
-#include "c_malloc.h"
+#include "cc_allocate.h"
 
 // The size of a block_meta struct.
 #define CC_META_SIZE sizeof(cc_block_meta)
