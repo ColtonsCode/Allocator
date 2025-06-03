@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <string.h>
 #include "cc_allocate.h"
 
 // The size of a block_meta struct.
@@ -116,5 +117,41 @@ void cc_free(void *ptr)
 
     block_ptr->free = true;
     block_ptr->magic = 0x55555555;
+}
+
+void *cc_realloc(void *ptr, size_t size)
+{
+    if (!ptr)
+    {
+        return cc_malloc(size);
+    }
+
+    cc_block_meta *block_ptr = cc_get_block_ptr(ptr);
+    if (block_ptr->size >= size)
+    {
+        // This block already has enough space.
+        return ptr;
+    }
+
+    // Now some reallocation must be done.
+    void *new_ptr = cc_malloc(size);
+    if (!new_ptr)
+    {
+        return NULL; // TODO: Set errno on failure.
+    }
+
+    // Copy the old block to the new block, then free the old block.
+    memcpy(new_ptr, ptr, block_ptr->size);
+    cc_free(ptr);
+
+    return new_ptr;
+}
+
+void *cc_calloc(size_t nelem, size_t elsize)
+{
+    size_t size = nelem * elsize;
+    void *ptr = cc_malloc(size);
+    memset(ptr, 0, size);
+    return ptr;
 }
 
